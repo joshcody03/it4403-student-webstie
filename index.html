@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Student Website – IT 4403</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <h1>YOUR NAME</h1>
+    <p class="subtitle">YOUR AFFILIATION (example: Kennesaw State University – CCSE)</p>
+  </div>
+</header>
+
+<nav class="site-nav">
+  <div class="container nav-links">
+    <a class="active" href="index.html">Home</a>
+    <a href="exercises.html">Exercises</a>
+    <a href="labs.html">Labs</a>
+    <a href="projects.html">Projects</a>
+    <a href="wireframe.html">Wireframe</a>
+  </div>
+</nav>
+
+<main class="container">
+  <section class="card">
+    <h2>Overview</h2>
+    <p>
+      This website was created to organize and showcase my exercises, lab work,
+      and course projects for <strong>IT 4403 – Advanced Web and Mobile Applications</strong>.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Course Information</h2>
+    <p><strong>Course:</strong> IT 4403 – Advanced Web and Mobile Applications</p>
+  </section>
+
+  <section class="card">
+    <h2>Disclaimer</h2>
+    <p>
+      This is a student website created for course projects in IT 4403.
+      All content is for educational purposes only.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Links</h2>
+    <ul>
+      <li>
+        <a href="https://ccse.kennesaw.edu/it/" target="_blank" rel="noreferrer">
+          CCSE Department of IT Website
+        </a>
+      </li>
+      <li><a href="exercises.html">Exercises Page</a></li>
+      <li><a href="labs.html">Labs Page</a></li>
+      <li><a href="projects.html">Projects Page</a></li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Accessibility</h2>
+    <p>
+      This site uses high-contrast colors to keep text readable and follows basic
+      WCAG contrast guidelines where possible.
+    </p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>© <span id="year"></span> YOUR NAME</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
