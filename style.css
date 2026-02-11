@@ -170,14 +170,7 @@ hr{
   font-size: 0.95rem;
 }
 
-/* Wireframe image */
-.image-box{
-  margin-top: 10px;
-  border: 1px dashed rgba(201,214,232,0.22);
-  border-radius: 14px;
-  padding: 12px;
-  overflow:hidden;
-}
+
 
 .image-box img{
   width: 100%;
