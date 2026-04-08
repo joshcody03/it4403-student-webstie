@@ -1,110 +1,57 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Modified Calculator Example</title>
+  <title>Calculator</title>
 
-  <!-- jQuery (Google CDN) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <style>
-    body { font-family: system-ui, Arial, sans-serif; max-width: 720px; margin: 24px auto; padding: 0 16px; }
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
-    label { display: block; font-weight: 600; margin-bottom: 6px; }
-    input, select { width: 100%; padding: 10px; font-size: 1rem; }
-    .resultBox { margin-top: 14px; padding: 14px; border: 1px solid #ddd; border-radius: 10px; }
-    .small { color: #555; font-size: 0.95rem; }
+    body { font-family: Arial; padding: 20px; }
+    input, select { margin: 5px; padding: 5px; }
   </style>
 </head>
+
 <body>
-  <h1>Modified Calculator Example</h1>
-  <p class="small">Uses jQuery for DOM selection, output rendering, and event handling.</p>
 
-  <div class="row">
-    <div>
-      <label for="num1">Number 1</label>
-      <input id="num1" type="number" step="any" placeholder="Enter a number">
-    </div>
-    <div>
-      <label for="num2">Number 2</label>
-      <input id="num2" type="number" step="any" placeholder="Enter a number">
-    </div>
-  </div>
+<h1>Calculator</h1>
 
-  <div class="row">
-    <div>
-      <label for="op">Operation</label>
-      <select id="op">
-        <option value="+">Addition (+)</option>
-        <option value="-">Subtraction (−)</option>
-        <option value="*">Multiplication (×)</option>
-        <option value="/">Division (÷)</option>
-      </select>
-    </div>
-    <div>
-      <label for="color">Result Color (type a color name)</label>
-      <input id="color" type="text" placeholder="Example: red, blue, green">
-    </div>
-  </div>
+<input id="num1" type="number" placeholder="Number 1">
+<input id="num2" type="number" placeholder="Number 2">
 
-  <div class="resultBox">
-    <strong>Result:</strong>
-    <span id="result">—</span>
-    <div id="msg" class="small"></div>
-  </div>
+<br>
 
-  <script>
-    function compute() {
-      const a = Number($("#num1").val());
-      const b = Number($("#num2").val());
-      const op = $("#op").val();
-      const color = $("#color").val().trim();
+<select id="op">
+  <option value="+">+</option>
+  <option value="-">-</option>
+  <option value="*">*</option>
+  <option value="/">/</option>
+</select>
 
-      // Validate inputs
-      if ($("#num1").val() === "" || $("#num2").val() === "") {
-        $("#result").text("—");
-        $("#msg").text("Enter both numbers to see the result.");
-        return;
-      }
-      if (Number.isNaN(a) || Number.isNaN(b)) {
-        $("#result").text("—");
-        $("#msg").text("Please enter valid numeric values.");
-        return;
-      }
+<br>
 
-      let ans;
-      if (op === "+") ans = a + b;
-      else if (op === "-") ans = a - b;
-      else if (op === "*") ans = a * b;
-      else if (op === "/") {
-        if (b === 0) {
-          $("#result").text("—");
-          $("#msg").text("Division by zero is not allowed.");
-          return;
-        }
-        ans = a / b;
-      }
+<input id="color" placeholder="Type a color (red, blue)">
 
-      // Output rendering
-      $("#result").text(ans);
+<h2 id="result">Result: </h2>
 
-      // Color customization (keep readable if invalid)
-      if (color.length > 0) {
-        $("#result").css("color", color);
-      } else {
-        $("#result").css("color", "inherit");
-      }
+<script>
+function calculate() {
+  let a = Number($("#num1").val());
+  let b = Number($("#num2").val());
+  let op = $("#op").val();
+  let color = $("#color").val();
 
-      $("#msg").text("Updated dynamically as you type/change options.");
-    }
+  let answer;
 
-    // Event handling (jQuery)
-    $("#num1, #num2").on("input", compute);
-    $("#op, #color").on("change input", compute);
+  if(op == "+") answer = a + b;
+  if(op == "-") answer = a - b;
+  if(op == "*") answer = a * b;
+  if(op == "/") answer = a / b;
 
-    // Initial message
-    compute();
-  </script>
+  $("#result").text("Result: " + answer);
+  $("#result").css("color", color);
+}
+
+$("#num1, #num2, #op, #color").on("input change", calculate);
+</script>
+
 </body>
-</html>
