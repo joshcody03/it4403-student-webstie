@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Milestone 2 – Book Search</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header class="card">
+      <h1>Book Search Application</h1>
+      <p class="subtitle">Milestone 2 – Google Books API</p>
+
+      <nav class="nav">
+        <a class="active" href="index.html">Home</a>
+        <a href="bookshelf.html">My Bookshelf</a>
+        <a href="../milestone1/index.html">Milestone 1</a>
+        <a href="../../projects.html">Projects</a>
+      </nav>
+    </header>
+
+    <section class="card">
+      <h2>Search for Books</h2>
+      <div class="search-bar">
+        <label for="searchInput" class="sr-only">Search for books</label>
+        <input id="searchInput" type="text" placeholder="Enter keywords, for example: modern web">
+        <button id="searchBtn">Search</button>
+      </div>
+
+      <div class="controls">
+        <label for="pageSelect">Page:</label>
+        <select id="pageSelect"></select>
+      </div>
+
+      <div id="statusMessage" class="message">Enter a search term and click Search.</div>
+      <div id="searchResults" class="book-grid"></div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
