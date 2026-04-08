@@ -1,3 +1,7 @@
+console.log("app.js loaded");
+
+
+
 const RESULTS_PER_PAGE = 10;
 let allBooks = [];
 
