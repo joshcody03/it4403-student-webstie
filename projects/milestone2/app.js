@@ -1,13 +1,12 @@
 const RESULTS_PER_PAGE = 10;
 let allBooks = [];
 
-// Replace these with your own public bookshelf Volume IDs
+
 const bookshelfVolumeIds = [
-  "zyTCAlFPjgYC",
-  "uW8bHAAACAAJ",
-  "m8dPPgAACAAJ",
-  "1wy49i_gQjIC",
-  "OEBPSwEACAAJ"
+  "ev52BgAAQBAJ",
+  "DXwkAQAAMAAJ",
+  "c9RGBAAAQBAJ",
+  
 ];
 
 function getQueryParam(name) {
