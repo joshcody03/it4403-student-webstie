@@ -160,16 +160,28 @@ function loadBookshelf() {
     return;
   }
 
+  $("#bookshelfMessage").text("Loading bookshelf books...");
+
   const requests = bookshelfVolumeIds.map(id =>
     $.getJSON(`https://www.googleapis.com/books/v1/volumes/${encodeURIComponent(id)}`)
+      .then(book => book)
+      .catch(() => null)
   );
 
   Promise.all(requests)
     .then(results => {
       let html = "";
-      results.forEach(book => {
+      const validBooks = results.filter(book => book !== null);
+
+      validBooks.forEach(book => {
         html += createBookCard(book);
       });
+
+      if (!validBooks.length) {
+        $("#bookshelfMessage").text("No valid bookshelf books could be loaded.");
+        $("#bookshelfResults").html("");
+        return;
+      }
 
       $("#bookshelfMessage").text("Books from my public bookshelf.");
       $("#bookshelfResults").html(html);
@@ -178,7 +190,6 @@ function loadBookshelf() {
       $("#bookshelfMessage").text("Could not load bookshelf books.");
     });
 }
-
 $(document).ready(function() {
   const page = window.location.pathname;
 
