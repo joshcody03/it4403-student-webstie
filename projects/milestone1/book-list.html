@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Milestone 1 – Book List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, Arial, sans-serif;
+      background: #061023;
+      color: #c9d6e8;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #0a2342;
+      border: 1px solid #1c2f52;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .book-item {
+      background: #102b50;
+      border: 1px solid #1c2f52;
+      border-radius: 12px;
+      padding: 15px;
+    }
+
+    .book-item img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background: #061023;
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+    }
+
+    a {
+      color: #c9d6e8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Milestone 1 – Book List JSON Display</h1>
+      <p><a href="index.html">← Back to Milestone 1 Home</a></p>
+    </div>
+
+    <div class="card">
+      <div id="bookList" class="book-grid">
+        <p>Loading books...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $.getJSON("google-books-search.json", function(data) {
+      const items = data.items || [];
+      let html = "";
+
+      $.each(items, function(index, item) {
+        const book = item.volumeInfo || {}; 
+
+        const title = book.title || "No title available";
+        const authors = book.authors ? book.authors.join(", ") : "Not available";
+        const publisher = book.publisher || "Not available";
+        const publishedDate = book.publishedDate || "Not available";
+        const description = book.description ? book.description.substring(0, 200) + "..." : "No description available";
+        const image = book.imageLinks ? (book.imageLinks.thumbnail || book.imageLinks.smallThumbnail) : "";
+        const infoLink = book.infoLink || "#";
+
+        html += `
+          <div class="book-item">
+            ${image ? `<img src="${image}" alt="Cover image for ${title}">` : `<p>No cover image available.</p>`}
+            <h3>${title}</h3>
+            <p><strong>Authors:</strong> ${authors}</p>
+            <p><strong>Publisher:</strong> ${publisher}</p>
+            <p><strong>Published:</strong> ${publishedDate}</p>
+            <p>${description}</p>
+            <p><a href="${infoLink}" target="_blank" rel="noreferrer">More Info</a></p>
+          </div>
+        `;
+      });
+
+      $("#bookList").html(html || "<p>No books found in the JSON file.</p>");
+    }).fail(function() {
+      $("#bookList").html("<p>Could not load the JSON file.</p>");
+    });
+  </script>
+</body>
+</html>
