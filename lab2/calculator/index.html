@@ -6,9 +6,40 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <style>
-    body { font-family: Arial; padding: 20px; }
-    input, select { margin: 5px; padding: 5px; }
-  </style>
+  body {
+    font-family: system-ui, Arial;
+    background: #061023; /* navy */
+    color: #c9d6e8; /* light blue-grey */
+    padding: 20px;
+    text-align: center;
+  }
+
+  h1 {
+    color: #c9d6e8;
+  }
+
+  input, select {
+    margin: 8px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #1c2f52;
+    background: #0a2342;
+    color: #c9d6e8;
+  }
+
+  input::placeholder {
+    color: #8fa3c7;
+  }
+
+  #result {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #1c2f52;
+    border-radius: 10px;
+    background: #0a2342;
+    display: inline-block;
+  }
+</style>
 </head>
 
 <body>
