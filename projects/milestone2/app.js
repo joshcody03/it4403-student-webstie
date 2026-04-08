@@ -1,13 +1,18 @@
 const RESULTS_PER_PAGE = 10;
 let allBooks = [];
 
-
 const bookshelfVolumeIds = [
   "ev52BgAAQBAJ",
   "DXwkAQAAMAAJ",
-  "c9RGBAAAQBAJ",
-  
+  "c9RGBAAAQBAJ"
 ];
+
+function getGoogleBooksData(url) {
+  return $.ajax({
+    url: url,
+    dataType: "jsonp"
+  });
+}
 
 function getQueryParam(name) {
   const params = new URLSearchParams(window.location.search);
@@ -20,12 +25,19 @@ function escapeHtml(text) {
 
 function createBookCard(item) {
   const volumeInfo = item.volumeInfo || {};
-  const image = volumeInfo.imageLinks?.thumbnail || volumeInfo.imageLinks?.smallThumbnail || "";
+  const image =
+    volumeInfo.imageLinks?.thumbnail ||
+    volumeInfo.imageLinks?.smallThumbnail ||
+    "";
   const title = volumeInfo.title || "No title available";
 
   return `
     <div class="book-card">
-      ${image ? `<img src="${image}" alt="Cover image for ${escapeHtml(title)}">` : `<p>No cover image available.</p>`}
+      ${
+        image
+          ? `<img src="${image}" alt="Cover image for ${escapeHtml(title)}">`
+          : `<p>No cover image available.</p>`
+      }
       <h3>
         <a href="details.html?id=${encodeURIComponent(item.id)}">${escapeHtml(title)}</a>
       </h3>
@@ -71,14 +83,13 @@ function searchBooks() {
   $("#searchResults").empty();
   $("#pageSelect").empty();
 
-  // Get up to 60 results by making 3 requests of 20 each
   const urls = [
     `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(term)}&startIndex=0&maxResults=20`,
     `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(term)}&startIndex=20&maxResults=20`,
     `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(term)}&startIndex=40&maxResults=20`
   ];
 
-  Promise.all(urls.map(url => $.getJSON(url)))
+  Promise.all(urls.map(url => getGoogleBooksData(url)))
     .then(responses => {
       allBooks = [];
 
@@ -93,6 +104,7 @@ function searchBooks() {
       if (!allBooks.length) {
         $("#statusMessage").text("No books found.");
         $("#searchResults").empty();
+        $("#pageSelect").empty();
         return;
       }
 
@@ -115,43 +127,49 @@ function loadBookDetails() {
 
   const url = `https://www.googleapis.com/books/v1/volumes/${encodeURIComponent(bookId)}`;
 
-  $.getJSON(url, function(data) {
-    const volumeInfo = data.volumeInfo || {};
-    const saleInfo = data.saleInfo || {};
+  getGoogleBooksData(url)
+    .then(data => {
+      const volumeInfo = data.volumeInfo || {};
+      const saleInfo = data.saleInfo || {};
 
-    const title = volumeInfo.title || "No title available";
-    const authors = volumeInfo.authors ? volumeInfo.authors.join(", ") : "Not available";
-    const publisher = volumeInfo.publisher || "Not available";
-    const description = volumeInfo.description || "No description available";
-    const image =
-      volumeInfo.imageLinks?.thumbnail ||
-      volumeInfo.imageLinks?.small ||
-      volumeInfo.imageLinks?.smallThumbnail ||
-      "";
-    const price = saleInfo.listPrice
-      ? `${saleInfo.listPrice.amount} ${saleInfo.listPrice.currencyCode}`
-      : "Not available";
+      const title = volumeInfo.title || "No title available";
+      const authors = volumeInfo.authors ? volumeInfo.authors.join(", ") : "Not available";
+      const publisher = volumeInfo.publisher || "Not available";
+      const description = volumeInfo.description || "No description available";
+      const image =
+        volumeInfo.imageLinks?.thumbnail ||
+        volumeInfo.imageLinks?.small ||
+        volumeInfo.imageLinks?.smallThumbnail ||
+        "";
+      const price = saleInfo.listPrice
+        ? `${saleInfo.listPrice.amount} ${saleInfo.listPrice.currencyCode}`
+        : "Not available";
 
-    const html = `
-      <div class="details-layout">
-        <div>
-          ${image ? `<img src="${image}" alt="Cover image for ${escapeHtml(title)}">` : `<p>No cover image available.</p>`}
+      const html = `
+        <div class="details-layout">
+          <div>
+            ${
+              image
+                ? `<img src="${image}" alt="Cover image for ${escapeHtml(title)}">`
+                : `<p>No cover image available.</p>`
+            }
+          </div>
+          <div>
+            <h2>${escapeHtml(title)}</h2>
+            <p><strong>Authors:</strong> ${escapeHtml(authors)}</p>
+            <p><strong>Publisher:</strong> ${escapeHtml(publisher)}</p>
+            <p><strong>Price:</strong> <span class="price">${escapeHtml(price)}</span></p>
+            <p><strong>Description:</strong></p>
+            <p>${description}</p>
+          </div>
         </div>
-        <div>
-          <h2>${escapeHtml(title)}</h2>
-          <p><strong>Authors:</strong> ${escapeHtml(authors)}</p>
-          <p><strong>Publisher:</strong> ${escapeHtml(publisher)}</p>
-          <p><strong>Price:</strong> <span class="price">${escapeHtml(price)}</span></p>
-          <p><strong>Description:</strong></p>
-          <p>${description}</p>
-        </div>
-      </div>
-    `;
+      `;
 
-    $("#detailsContainer").html(html);
-  }).fail(function() {
-    $("#detailsContainer").html("<p class='message'>Could not load book details.</p>");
-  });
+      $("#detailsContainer").html(html);
+    })
+    .catch(() => {
+      $("#detailsContainer").html("<p class='message'>Could not load book details.</p>");
+    });
 }
 
 function loadBookshelf() {
@@ -163,7 +181,7 @@ function loadBookshelf() {
   $("#bookshelfMessage").text("Loading bookshelf books...");
 
   const requests = bookshelfVolumeIds.map(id =>
-    $.getJSON(`https://www.googleapis.com/books/v1/volumes/${encodeURIComponent(id)}`)
+    getGoogleBooksData(`https://www.googleapis.com/books/v1/volumes/${encodeURIComponent(id)}`)
       .then(book => book)
       .catch(() => null)
   );
@@ -190,13 +208,14 @@ function loadBookshelf() {
       $("#bookshelfMessage").text("Could not load bookshelf books.");
     });
 }
-$(document).ready(function() {
+
+$(document).ready(function () {
   const page = window.location.pathname;
 
   if (page.endsWith("/index.html") || page.endsWith("/milestone2/")) {
     $("#searchBtn").on("click", searchBooks);
 
-    $("#pageSelect").on("change", function() {
+    $("#pageSelect").on("change", function () {
       const selectedPage = Number($(this).val());
       renderSearchPage(allBooks, selectedPage);
     });
