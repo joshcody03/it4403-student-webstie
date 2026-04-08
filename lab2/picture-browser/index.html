@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <title>Picture Browser</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <style>
+    body { font-family: Arial; text-align: center; padding: 20px; }
+    img { width: 400px; }
+  </style>
+</head>
+
+<body>
+
+<h1>Picture Browser</h1>
+
+<img id="image" src="images/pic1.jpg">
+
+<br><br>
+
+<button id="next">Next</button>
+
+<p id="counter"></p>
+
+<script>
+let images = [
+  "images/pic1.jpg",
+  "images/pic2.jpg",
+  "images/pic3.jpg",
+  "images/pic4.jpg",
+  "images/pic5.jpg"
+];
+
+let index = 0;
+
+function showImage() {
+  $("#image").attr("src", images[index]);
+  $("#counter").text("Image " + (index+1) + " of " + images.length);
+}
+
+$("#next").click(function() {
+  index++;
+  if(index >= images.length) index = 0;
+  showImage();
+});
+
+showImage();
+</script>
+
+</body>
+</html>
