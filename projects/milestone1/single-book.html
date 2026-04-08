@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Milestone 1 – Single Book</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, Arial, sans-serif;
+      background: #061023;
+      color: #c9d6e8;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #0a2342;
+      border: 1px solid #1c2f52;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .book-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+      border: 1px solid #1c2f52;
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+    }
+
+    a {
+      color: #c9d6e8;
+    }
+
+    @media (max-width: 700px) {
+      .book-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Milestone 1 – Single Book JSON Display</h1>
+      <p><a href="index.html">← Back to Milestone 1 Home</a></p>
+    </div>
+
+    <div class="card" id="bookContainer">
+      <p>Loading book data...</p>
+    </div>
+  </div>
+
+  <script>
+    $.getJSON("google-books-book.json", function(data) {
+      const book = data.volumeInfo || {};
+      const saleInfo = data.saleInfo || {};
+      const accessInfo = data.accessInfo || {};
+
+      const title = book.title || "No title available";
+      const subtitle = book.subtitle || "";
+      const authors = book.authors ? book.authors.join(", ") : "Not available";
+      const publisher = book.publisher || "Not available";
+      const publishedDate = book.publishedDate || "Not available";
+      const description = book.description || "No description available";
+      const pageCount = book.pageCount || "Not available";
+      const categories = book.categories ? book.categories.join(", ") : "Not available";
+      const language = book.language || "Not available";
+      const previewLink = book.previewLink || "#";
+      const infoLink = book.infoLink || "#";
+      const image = book.imageLinks ? (book.imageLinks.thumbnail || book.imageLinks.smallThumbnail) : "";
+      const buyLink = saleInfo.buyLink || "#";
+      const webReader = accessInfo.webReaderLink || "#";
+
+      let html = `
+        <div class="book-layout">
+          <div>
+            ${image ? `<img src="${image}" alt="Cover image for ${title}">` : `<p>No cover image available.</p>`}
+          </div>
+          <div>
+            <h2>${title}</h2>
+            ${subtitle ? `<h3>${subtitle}</h3>` : ""}
+            <p><strong>Authors:</strong> ${authors}</p>
+            <p><strong>Publisher:</strong> ${publisher}</p>
+            <p><strong>Published Date:</strong> ${publishedDate}</p>
+            <p><strong>Page Count:</strong> ${pageCount}</p>
+            <p><strong>Categories:</strong> ${categories}</p>
+            <p><strong>Language:</strong> ${language}</p>
+            <p><strong>Description:</strong></p>
+            <p>${description}</p>
+            <p>
+              <a href="${previewLink}" target="_blank" rel="noreferrer">Preview</a> |
+              <a href="${infoLink}" target="_blank" rel="noreferrer">More Info</a> |
+              <a href="${webReader}" target="_blank" rel="noreferrer">Web Reader</a> |
+              <a href="${buyLink}" target="_blank" rel="noreferrer">Buy Link</a>
+            </p>
+          </div>
+        </div>
+      `;
+
+      $("#bookContainer").html(html);
+    }).fail(function() {
+      $("#bookContainer").html("<p>Could not load the JSON file.</p>");
+    });
+  </script>
+</body>
+</html>
