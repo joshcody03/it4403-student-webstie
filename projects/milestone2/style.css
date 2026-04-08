@@ -1,0 +1,140 @@
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  background: #061023;
+  color: #c9d6e8;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.card {
+  background: #0a2342;
+  border: 1px solid #1c2f52;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+.subtitle {
+  color: #9eb2cf;
+}
+
+.nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.nav a {
+  color: #c9d6e8;
+  text-decoration: none;
+  border: 1px solid #1c2f52;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #102b50;
+}
+
+.nav a.active,
+.nav a:hover {
+  background: #153763;
+}
+
+.search-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.search-bar input {
+  flex: 1;
+  min-width: 240px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #1c2f52;
+  background: #061023;
+  color: #c9d6e8;
+}
+
+.search-bar button,
+.controls select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #1c2f52;
+  background: #102b50;
+  color: #c9d6e8;
+}
+
+.controls {
+  margin-bottom: 16px;
+}
+
+.message {
+  color: #9eb2cf;
+  margin-bottom: 16px;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.book-card {
+  background: #102b50;
+  border: 1px solid #1c2f52;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.book-card img {
+  width: 100%;
+  max-height: 260px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #061023;
+  margin-bottom: 10px;
+}
+
+.book-card a {
+  color: #c9d6e8;
+}
+
+.details-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+}
+
+.details-layout img {
+  width: 100%;
+  border-radius: 10px;
+  background: #061023;
+  border: 1px solid #1c2f52;
+}
+
+.price {
+  color: #b8d9ff;
+  font-weight: bold;
+}
+
+.sr-only {
+  position: absolute;
+  left: -9999px;
+}
+
+@media (max-width: 800px) {
+  .details-layout {
+    grid-template-columns: 1fr;
+  }
+}
