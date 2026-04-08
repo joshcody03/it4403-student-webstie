@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Milestone 2 – My Bookshelf</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header class="card">
+      <h1>My Bookshelf</h1>
+      <p class="subtitle">Public bookshelf books loaded by Volume ID</p>
+
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a class="active" href="bookshelf.html">My Bookshelf</a>
+        <a href="../../projects.html">Projects</a>
+      </nav>
+    </header>
+
+    <section class="card">
+      <div id="bookshelfMessage" class="message">Loading bookshelf books...</div>
+      <div id="bookshelfResults" class="book-grid"></div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
