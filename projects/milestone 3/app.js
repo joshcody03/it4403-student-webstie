@@ -4,10 +4,8 @@ let currentPage = 1;
 
 // Replace or add your real working IDs here
 const bookshelfVolumeIds = [
-  "ev52BgAAQBAJ",
-  "zyTCAlFPjgYC",
-  "uW8bHAAACAAJ",
-  "m8dPPgAACAAJ",
+"ev52BgAAQBAJ",
+  "DXwkAQAAMAAJ",
   "c9RGBAAAQBAJ"
 ];
 
