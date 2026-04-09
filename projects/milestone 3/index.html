@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Milestone 3 – Book Search SPA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header class="card">
+      <h1>Book Search SPA</h1>
+      <p class="subtitle">Milestone 3 – Single Page Application with AJAX</p>
+
+      <nav class="nav">
+        <a class="active" href="index.html">Milestone 3</a>
+        <a href="../../projects.html">Projects</a>
+      </nav>
+    </header>
+
+    <section class="card">
+      <h2>Search for Books</h2>
+      <div class="search-bar">
+        <label for="searchInput" class="sr-only">Search books</label>
+        <input id="searchInput" type="text" placeholder="Enter a keyword like javascript or harry potter">
+        <button id="searchBtn">Search</button>
+        <button id="showBookshelfBtn" type="button">Show My Bookshelf</button>
+      </div>
+      <p id="statusMessage" class="message">Enter a search term or view your bookshelf.</p>
+      <div id="pagination" class="pagination"></div>
+    </section>
+
+    <section class="main-layout">
+      <div class="card">
+        <h2>Results / Collection</h2>
+        <div id="resultsContainer" class="results-grid"></div>
+      </div>
+
+      <div class="card">
+        <h2>Book Details</h2>
+        <div id="detailsContainer" class="details-panel">
+          <p class="message">Click a book to see details here.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
