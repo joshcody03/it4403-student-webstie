@@ -1,4 +1,4 @@
-console.log("app.js loaded");
+console.log("milestone2 app.js loaded");
 
 const RESULTS_PER_PAGE = 10;
 let allBooks = [];
@@ -72,8 +72,6 @@ function buildPageDropdown(totalBooks) {
 }
 
 function searchBooks() {
-  console.log("searchBooks ran");
-
   const term = $("#searchInput").val().trim();
 
   if (!term) {
@@ -87,27 +85,29 @@ function searchBooks() {
   $("#searchResults").empty();
   $("#pageSelect").empty();
 
-  const urls = [
-    `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(term)}&startIndex=0&maxResults=20`,
-    `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(term)}&startIndex=20&maxResults=20`,
-    `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(term)}&startIndex=40&maxResults=20`
+  const requests = [
+    getGoogleBooksData(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(term)}&startIndex=0&maxResults=20`),
+    getGoogleBooksData(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(term)}&startIndex=20&maxResults=20`),
+    getGoogleBooksData(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(term)}&startIndex=40&maxResults=20`)
   ];
 
-  Promise.all(urls.map(url => getGoogleBooksData(url)))
-    .then(responses => {
-      console.log("search responses:", responses);
+  $.when.apply($, requests)
+    .done(function () {
+      console.log("search raw arguments:", arguments);
 
       allBooks = [];
 
-      responses.forEach(response => {
-        if (response.error) {
+      for (let i = 0; i < arguments.length; i++) {
+        const response = arguments[i][0]; // jQuery returns [data, statusText, jqXHR]
+
+        if (response && response.error) {
           console.log("Search API error:", response.error);
         }
 
-        if (response.items) {
+        if (response && response.items) {
           allBooks = allBooks.concat(response.items);
         }
-      });
+      }
 
       allBooks = allBooks.slice(0, 60);
 
@@ -122,7 +122,7 @@ function searchBooks() {
       buildPageDropdown(allBooks.length);
       renderSearchPage(allBooks, 1);
     })
-    .catch(error => {
+    .fail(function (error) {
       console.log("Search request failed:", error);
       $("#statusMessage").text("Could not load search results from the Google Books API.");
     });
@@ -139,7 +139,7 @@ function loadBookDetails() {
   const url = `https://www.googleapis.com/books/v1/volumes/${encodeURIComponent(bookId)}`;
 
   getGoogleBooksData(url)
-    .then(data => {
+    .done(function (data) {
       console.log("details response:", data);
 
       if (data.error) {
@@ -186,7 +186,7 @@ function loadBookDetails() {
 
       $("#detailsContainer").html(html);
     })
-    .catch(error => {
+    .fail(function (error) {
       console.log("Details request failed:", error);
       $("#detailsContainer").html("<p class='message'>Could not load book details.</p>");
     });
@@ -199,27 +199,30 @@ function loadBookshelf() {
   }
 
   $("#bookshelfMessage").text("Loading bookshelf books...");
+  $("#bookshelfResults").html("");
 
   const requests = bookshelfVolumeIds.map(id =>
     getGoogleBooksData(`https://www.googleapis.com/books/v1/volumes/${encodeURIComponent(id)}`)
-      .then(book => book)
-      .catch(error => {
-        console.log(`Bookshelf request failed for ID ${id}:`, error);
-        return null;
-      })
   );
 
-  Promise.all(requests)
-    .then(results => {
-      console.log("bookshelf results:", results);
+  $.when.apply($, requests)
+    .done(function () {
+      console.log("bookshelf raw arguments:", arguments);
 
       let html = "";
-      const validBooks = results.filter(book => {
-        if (book && book.error) {
-          console.log("Bookshelf API error:", book.error);
+      let validBooks = [];
+
+      for (let i = 0; i < arguments.length; i++) {
+        const response = arguments[i][0]; // [data, statusText, jqXHR]
+
+        if (response && response.error) {
+          console.log("Bookshelf API error:", response.error);
         }
-        return book !== null && !book.error;
-      });
+
+        if (response && response.volumeInfo && response.volumeInfo.title) {
+          validBooks.push(response);
+        }
+      }
 
       validBooks.forEach(book => {
         html += createBookCard(book);
@@ -234,7 +237,7 @@ function loadBookshelf() {
       $("#bookshelfMessage").text("Books from my public bookshelf.");
       $("#bookshelfResults").html(html);
     })
-    .catch(error => {
+    .fail(function (error) {
       console.log("Bookshelf request failed:", error);
       $("#bookshelfMessage").text("Could not load bookshelf books.");
     });
@@ -245,8 +248,6 @@ $(document).ready(function () {
   console.log("Current page path:", page);
 
   if (page.endsWith("/index.html") || page.endsWith("/milestone2/")) {
-    console.log("Milestone 2 search page detected");
-
     $("#searchBtn").on("click", searchBooks);
 
     $("#pageSelect").on("change", function () {
@@ -256,12 +257,10 @@ $(document).ready(function () {
   }
 
   if (page.endsWith("/details.html")) {
-    console.log("Details page detected");
     loadBookDetails();
   }
 
   if (page.endsWith("/bookshelf.html")) {
-    console.log("Bookshelf page detected");
     loadBookshelf();
   }
 });
