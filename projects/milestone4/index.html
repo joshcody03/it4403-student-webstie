@@ -1,1 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Milestone 4 – Improved Book Search SPA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/mustache@4.2.0/mustache.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header class="card">
+      <h1>Book Search SPA</h1>
+      <p class="subtitle">Milestone 4 – Improved SPA UI</p>
 
+      <nav class="nav">
+        <a class="active" href="index.html">Milestone 4</a>
+        <a href="../../projects.html">Projects</a>
+      </nav>
+    </header>
+
+    <section class="card">
+      <h2>Search for Books</h2>
+      <div class="toolbar">
+        <input id="searchInput" type="text" placeholder="Enter a keyword like javascript or harry potter">
+        <button id="searchBtn">Search</button>
+        <button id="showBookshelfBtn">Show My Bookshelf</button>
+      </div>
+
+      <div class="toolbar second-row">
+        <button id="gridViewBtn" class="active-view">Grid View</button>
+        <button id="listViewBtn">List View</button>
+      </div>
+
+      <p id="statusMessage" class="message">Enter a search term or click Show My Bookshelf.</p>
+      <div id="pagination" class="pagination"></div>
+    </section>
+
+    <section class="main-layout">
+      <div class="card">
+        <h2 id="resultsHeading">Results</h2>
+        <div id="resultsContainer" class="results-grid"></div>
+      </div>
+
+      <div class="card">
+        <h2>Book Details</h2>
+        <div id="detailsContainer" class="details-panel">
+          <p class="message">Click a book to see details here.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Mustache template: book card -->
+  <script id="book-card-template" type="x-tmpl-mustache">
+    <div class="book-card {{viewClass}}" data-book-id="{{id}}">
+      <div class="card-image">
+        {{#image}}
+          <img src="{{image}}" alt="Cover image for {{title}}">
+        {{/image}}
+        {{^image}}
+          <div class="no-image">No cover image available.</div>
+        {{/image}}
+      </div>
+      <div class="card-content">
+        <h3>{{title}}</h3>
+        {{#authors}}<p><strong>Authors:</strong> {{authors}}</p>{{/authors}}
+        {{#publisher}}<p><strong>Publisher:</strong> {{publisher}}</p>{{/publisher}}
+      </div>
+    </div>
+  </script>
+
+  
+  <script id="details-template" type="x-tmpl-mustache">
+    <div class="details-box">
+      {{#image}}
+        <img src="{{image}}" alt="Cover image for {{title}}">
+      {{/image}}
+      {{^image}}
+        <div class="no-image details-no-image">No cover image available.</div>
+      {{/image}}
+
+      <h3>{{title}}</h3>
+      <p><strong>Authors:</strong> {{authors}}</p>
+      <p><strong>Publisher:</strong> {{publisher}}</p>
+      <p><strong>Language:</strong> {{language}}</p>
+      <p><strong>Page Count:</strong> {{pageCount}}</p>
+      <p><strong>Categories:</strong> {{categories}}</p>
+      <p><strong>Published Date:</strong> {{publishedDate}}</p>
+      <p><strong>Price:</strong> {{price}}</p>
+      <p><strong>Description:</strong></p>
+      <p>{{description}}</p>
+    </div>
+  </script>
+
+  <script src="app.js"></script>
+</body>
+</html>
